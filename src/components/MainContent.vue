@@ -1,13 +1,18 @@
 <template>
   <div>
-    <pomodoro-timer></pomodoro-timer>
+
+    <header-component></header-component>
+    <content-component></content-component>
+    <footer-component></footer-component>
   </div>
 </template>
 <script>
-import PomodoroTimer from './main/sections/PomodoroTimer'
+import {HeaderComponent, FooterComponent, ContentComponent} from './main'
 export default {
   components: {
-    PomodoroTimer
+    HeaderComponent,
+    FooterComponent,
+    ContentComponent
   }
 }
 </script>

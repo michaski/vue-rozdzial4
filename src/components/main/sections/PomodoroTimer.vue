@@ -1,11 +1,13 @@
 <template>
   <div class="jumbotron">
     <div class="container">
-      <img class="img-fluid rounded exercise-img" src="https://cdn.prod.openfit.com/uploads/2017/06/01150749/how-to-get-better-at-push-ups2.jpg" alt="Push-ups image">
+      <img class="img-fluid rounded exercise-img"
+           src="https://cdn.prod.openfit.com/uploads/2017/06/01150749/how-to-get-better-at-push-ups2.jpg"
+           alt="Push-ups image">
       <h2>Push-ups</h2>
-      <lead>
+      <p>
         Description: lorem ipsum
-      </lead>
+      </p>
     </div>
     <div class="container">
       <div class="row">
@@ -21,7 +23,8 @@
 </template>
 <script>
 import CountDownTimer from './timer/CountDownTimer'
-import config from './../../../config'
+import {mapActions, mapGetters} from 'vuex'
+
 export default {
   data () {
     return {
@@ -32,14 +35,18 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      config: 'getConfig',
+      statistics: 'getStatistics'
+    }),
     time () {
       let minutes
       if (this.isWorking) {
-        minutes = config.workingPomodoro
+        minutes = this.config.workingPomodoro
       } else if (this.isShortBreak) {
-        minutes = config.shortBreak
+        minutes = this.config.shortBreak
       } else if (this.isLongBreak) {
-        minutes = config.longBreak
+        minutes = this.config.longBreak
       }
       return minutes * 60
     }
@@ -48,20 +55,18 @@ export default {
     CountDownTimer
   },
   methods: {
+    ...mapActions(['setTotalPomodoros']),
     togglePomodoro () {
-      // toggle the working state
+      this.setTotalPomodoros(this.statistics.totalPomodoros++)
       this.isWorking = !this.isWorking
-      // reset break states
       this.isShortBreak = this.isLongBreak = false
-      // we have switched to the working state, just return
       if (this.isWorking) {
         return
       }
-      // we have switched to the break state, increase the number of
-      // pomodoros and choose between long and short break
       this.pomodoros++
+      console.log('aasd')
       this.isLongBreak = this.pomodoros %
-        config.pomodorosTillLongBreak === 0
+        this.config.pomodorosTillLongBreak === 0
       this.isShortBreak = !this.isLongBreak
     }
   }

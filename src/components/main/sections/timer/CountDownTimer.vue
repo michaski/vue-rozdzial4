@@ -49,7 +49,7 @@ export default {
       this.interval = setInterval(() => {
         this.timestamp--
         if (this.timestamp === 0) {
-          this.timestamp = this.time
+          this.resetTimer()
         }
       }, 1000)
     },
@@ -58,13 +58,15 @@ export default {
     },
     stop () {
       clearInterval(this.interval)
-      this.timestamp = this.time
+      this.resetTimer()
+    },
+    resetTimer () {
+      if (this.timestamp <= 0) {
+        this.$emit('finished')
+        this.timestamp = this.time
+      }
     }
   }
-}
-if (this.timestamp <= 0) {
-  this.$emit('finished')
-  this.timestamp = this.time
 }
 
 </script>
